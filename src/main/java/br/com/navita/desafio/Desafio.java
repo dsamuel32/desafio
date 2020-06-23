@@ -1,7 +1,5 @@
 package br.com.navita.desafio;
 
-import sun.rmi.server.InactiveGroupException;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -14,21 +12,28 @@ public class Desafio {
 
     public Integer solution(Integer n) {
 
-
-        if (n == null) {
-            return ZERO;
+        if (isNumeroValido(n)) {
+            return processar(n);
         }
 
+        return ZERO;
+    }
+
+    private Integer processar(Integer n) {
         String numero = n.toString();
-        int ultimoIndice = numero.length() - 1;
+        Integer ultimoIndice = numero.length() - 1;
         List<String> numeros = gerarNumeros(numero, 0, ultimoIndice);
-        Integer maiorValor = this.extrairMaiorNumero(numeros);
+        Integer maiorValor = extrairMaiorNumero(numeros);
 
         if (maiorValor > VALOR_MAXIMO) {
             return MENOS_UM;
         }
 
         return maiorValor;
+    }
+
+    private Boolean isNumeroValido(Integer numero) {
+        return numero != null && numero > ZERO;
     }
 
     private Integer extrairMaiorNumero(List<String> numeros) {
