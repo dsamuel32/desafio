@@ -13,13 +13,13 @@ public class Desafio {
     public Integer solution(Integer n) {
 
         if (isNumeroValido(n)) {
-            return processar(n);
+            return obterMaiorNumeroIrmao(n);
         }
 
         return ZERO;
     }
 
-    private Integer processar(Integer n) {
+    private Integer obterMaiorNumeroIrmao(Integer n) {
         String numero = n.toString();
         Integer ultimoIndice = numero.length() - 1;
         List<String> numeros = gerarNumeros(numero, 0, ultimoIndice);
@@ -44,15 +44,15 @@ public class Desafio {
     }
 
     private List<String> gerarNumeros(String numero, int primeiroIndice, int ultimoIndice) {
-        List<String> numeros = new ArrayList<String>();
-        if (primeiroIndice == ultimoIndice) {
-            numeros.add(numero);
-        } else {
+        List<String> numeros = new ArrayList<>();
+        if (primeiroIndice != ultimoIndice) {
             for (int i = primeiroIndice; i <= ultimoIndice; i++) {
                 numero = trocarPosicao(numero, primeiroIndice, i);
                 numeros.addAll(gerarNumeros(numero, primeiroIndice + 1, ultimoIndice));
                 numero = trocarPosicao(numero, primeiroIndice, i);
             }
+        } else {
+            numeros.add(numero);
         }
         return numeros;
     }
