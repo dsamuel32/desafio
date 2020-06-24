@@ -3,6 +3,7 @@ package br.com.navita.desafio;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Desafio {
 
@@ -20,10 +21,10 @@ public class Desafio {
     }
 
     private Integer obterMaiorNumeroIrmao(Integer n) {
-        String numero = n.toString();
-        Integer ultimoIndice = numero.length() - 1;
-        List<String> numeros = gerarNumeros(numero, 0, ultimoIndice);
-        Integer maiorValor = extrairMaiorNumero(numeros);
+        char [] elementos = n.toString().toCharArray();
+        List<Integer> numeros = criarElementosInteiros(elementos);
+        List<Integer> numerosOrdenados = ordenarElementosDecrescente(numeros);
+        Integer maiorValor = montarMaiorNumeroPossivel(numerosOrdenados);
 
         if (maiorValor > VALOR_MAXIMO) {
             return MENOS_UM;
@@ -32,37 +33,29 @@ public class Desafio {
         return maiorValor;
     }
 
-    private Boolean isNumeroValido(Integer numero) {
-        return numero != null && numero > ZERO;
-    }
-
-    private Integer extrairMaiorNumero(List<String> numeros) {
-        return numeros.stream()
-                      .map(Integer::parseInt)
-                      .max(Comparator.comparing(Integer::valueOf))
-                      .orElseThrow(RuntimeException::new);
-    }
-
-    private List<String> gerarNumeros(String numero, int primeiroIndice, int ultimoIndice) {
-        List<String> numeros = new ArrayList<>();
-        if (primeiroIndice != ultimoIndice) {
-            for (int i = primeiroIndice; i <= ultimoIndice; i++) {
-                numero = trocarPosicao(numero, primeiroIndice, i);
-                numeros.addAll(gerarNumeros(numero, primeiroIndice + 1, ultimoIndice));
-                numero = trocarPosicao(numero, primeiroIndice, i);
-            }
-        } else {
-            numeros.add(numero);
+    private List<Integer> criarElementosInteiros(char [] elementos) {
+        List<Integer> numeros = new ArrayList<>();
+        for (char i : elementos) {
+            String valor = String.valueOf(i);
+            numeros.add(Integer.valueOf(valor));
         }
         return numeros;
     }
 
-    private String trocarPosicao(String a, int i, int j) {
-        char[] charArray = a.toCharArray();
-        char temp = charArray[i];
-        charArray[i] = charArray[j];
-        charArray[j] = temp;
-        return String.valueOf(charArray);
+    private Integer montarMaiorNumeroPossivel(List<Integer> numeros) {
+        StringBuilder sb = new StringBuilder();
+        numeros.forEach(sb::append);
+        return Integer.valueOf(sb.toString());
+    }
+
+    private List<Integer> ordenarElementosDecrescente(List<Integer> numeros) {
+        return numeros.stream()
+                      .sorted(Comparator.reverseOrder())
+                      .collect(Collectors.toList());
+    }
+
+    private Boolean isNumeroValido(Integer numero) {
+        return numero != null && numero > ZERO;
     }
 
 }

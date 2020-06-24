@@ -34,7 +34,7 @@ public class DesafioTest {
 
     @Test
     public void deveRetornar321QuandoInformado123() {
-        assertEquals(TRES_DOIS_UM, this.desafio.solution(123));
+        assertEquals(TRES_DOIS_UM, this.desafio.solution(123 ));
     }
 
     @Test
